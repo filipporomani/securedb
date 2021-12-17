@@ -1,6 +1,6 @@
-# xdb
+# securedb
 
-## xdb is a Python framework that lets you work with encrypted JSON databases.
+## securedb is a Python framework that lets you work with encrypted JSON databases.
 Features: 
 - newkey() to generate an encryption key
 - write(key, value) to write a determinated value into the database
