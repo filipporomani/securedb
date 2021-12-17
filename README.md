@@ -9,3 +9,4 @@ Features:
 - write_many(dict) to write an undefined amount of keys to the database.
 - delete_many(list) to delete an undefined amount of keys from the database
 
+## WARNING!! IF YOU LOST YOUR ENCRYPTION KEY, THE WHOLE DATABASE DATA WILL BE LOST! THERE'S NO WAY TO RECOVER A LOST KEY!
