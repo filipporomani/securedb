@@ -1,6 +1,7 @@
 # securedb
 
 ## securedb is a Python framework that lets you work with encrypted JSON databases.
+## `pip install securedb`
 ## Content index
 - [Creating a DB](#creation)
   - [Encryption key generation](#key)
