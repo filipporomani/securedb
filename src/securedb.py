@@ -12,7 +12,12 @@ def encrypt(key, data):
 def decrypt(key, data):
     fernet = Fernet(key)
     return fernet.decrypt(data)
-
+def newkey():
+        keyfile = open(".key", "w+")
+        editable = Fernet.generate_key()
+        key1 = str(editable).replace("b'", "")
+        key = str(key1).replace("'", "")
+        keyfile.write(str(key))
 
 class Db():
     def __init__(self, path, key):
@@ -36,9 +41,6 @@ class Db():
             
         except PathError:
             print("The specified database does not exist.")
-
-    def newkey(self):
-        return Fernet.generate_key()
 
     def write(self, key, value):
         to_dict = decrypt(self.key, bytes(self.payload))
