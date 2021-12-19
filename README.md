@@ -2,17 +2,17 @@
 
 ## securedb is a Python framework that lets you work with encrypted JSON databases.
 ## Content index
-- [Creating a DB](##creation)
-  - [Encryption key generation](###key)
-  - [Database initialization](###initialization)
-- [Writing values](##writing)
-  - [write()](###write)
-  - [write_many](###write_many)
-- [Deleting values](##deleting)
-  - [delete()](###delete)
-  - [delete_many()](###delete_many)
-  - [clear()](###clear)
-- [Reading values](##reading)
+- [Creating a DB](#creation)
+  - [Encryption key generation](#key)
+  - [Database initialization](#initialization)
+- [Writing values](#writing)
+  - [write()](#write)
+  - [write_many](#write_many)
+- [Deleting values](#deleting)
+  - [delete()](#delete)
+  - [delete_many()](#delete_many)
+  - [clear()](#clear)
+- [Reading values](#reading)
 
 
 
