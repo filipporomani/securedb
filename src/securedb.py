@@ -49,10 +49,24 @@ class Db():
         data[key] = value
         with open(self.path, "w") as f:
             to_encrypt = str(data).encode()
-            to_write = encrypt(key, (to_encrypt))
+            to_write = encrypt(self.key, (to_encrypt))
             f.write(str(to_write))
             f.close()
         return "Key written to the database"
+
+    def write_many(self, payload: dict):
+        to_dict = decrypt(self.key, bytes(self.payload))
+        ev = eval(to_dict.decode())
+        data = dict(ev)
+        for key, value in payload.items():
+            data[key] = value
+        with open(self.path, "w") as f:
+            
+            to_encrypt = str(data).encode()
+            to_write = encrypt(self.key, (to_encrypt))
+            f.write(str(to_write))
+            f.close()
+        return "Keys written to the database"
     
     def clear(self):
         f = open(self.path, 'r+')
@@ -67,19 +81,6 @@ class Db():
         ev = eval(to_dict.decode())
         data = dict(ev)
         return data[key]
-
-    def write_many(self, payload: dict):
-        to_dict = decrypt(self.key, bytes(self.payload))
-        ev = eval(to_dict.decode())
-        data = dict(ev)
-        for key, value in payload.items():
-            data[key] = value
-        with open(self.path, "w") as f:
-            to_encrypt = str(data).encode()
-            to_write = encrypt(self.key, (to_encrypt))
-            f.write(str(to_write))
-            f.close()
-        return "Keys written to the database"
 
     def delete_many(self, payload: list):
         to_dict = decrypt(self.key, bytes(self.payload))
