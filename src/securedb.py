@@ -80,7 +80,39 @@ class Db():
         to_dict = decrypt(self.key, bytes(l))
         ev = eval(to_dict.decode())
         data = dict(ev)
-        return data[key]
+        try:
+            return data[key]
+        except KeyError:
+            print(f"Key {key} does not exist.")
+
+    def get_many(self, keys : list):
+        f = open(self.path, "r")
+        l = eval(f.read())
+        to_dict = decrypt(self.key, bytes(l))
+        ev = eval(to_dict.decode())
+        data = dict(ev)
+        els = {}
+        for x in keys:
+            try:
+                els[x] = data[x]
+            except KeyError:
+                print(f"Key {x} could not be resolved.")
+        return els
+
+    def delete(self, key):
+        to_dict = decrypt(self.key, bytes(self.payload))
+        ev = eval(to_dict.decode())
+        data = dict(ev)
+        try:
+            data.pop(key)
+        except:
+            print(f"Key {key} was not deleted because it does not exist.")
+        with open(self.path, "w") as f:
+            to_encrypt = str(data).encode()
+            to_write = encrypt(self.key, (to_encrypt))
+            f.write(str(to_write))
+            f.close()
+        return "Key deleted from the database"
 
     def delete_many(self, payload: list):
         to_dict = decrypt(self.key, bytes(self.payload))

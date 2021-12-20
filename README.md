@@ -1,19 +1,21 @@
 # securedb
 
 ## securedb is a Python framework that lets you work with encrypted JSON databases.
-## `pip install securedb`
+## `pip install securedb --upgrade`
 ## Content index
 - [Creating a DB](#creation)
   - [Encryption key generation](#key)
   - [Database initialization](#initialization)
 - [Writing values](#writing)
   - [write()](#write)
-  - [write_many](#write_many)
+  - [write_many()](#write_many)
 - [Deleting values](#deleting)
   - [delete()](#delete)
   - [delete_many()](#delete_many)
   - [clear()](#clear)
 - [Reading values](#reading)
+  - [get()](#get)
+  - [get_many()](#get_many)
 
 
 
@@ -70,3 +72,7 @@ Be careful using it, because this action cannot be undone and the function doesn
 ### get()
 To read any value from the database, you need to use the `get(key)` function.
 `key` is the key of the value you want to read (see [write](##writing)).
+
+### get_many()
+To read any value from the database, you need to use the `get_many(keys)` function.
+`keys` is a list of the keys you want to read (see [write](##writing)).
