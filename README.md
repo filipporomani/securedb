@@ -1,5 +1,5 @@
 # securedb
-[![Downloads](https://pepy.tech/badge/securedb)](https://pepy.tech/project/securedb) [![PyPi version](https://badgen.net/pypi/v/securedb/)](https://pypi.org/project/securedb)
+[![Downloads](https://pepy.tech/badge/securedb)](https://pepy.tech/project/securedb) [![PyPi version](https://badgen.net/pypi/v/securedb/)](https://pypi.org/project/securedb) [![PyPI status](https://img.shields.io/pypi/status/securedb.svg)](https://pypi.python.org/pypi/securedb/)
 ## securedb is a Python framework that lets you work with encrypted JSON databases.
 ## `pip install securedb --upgrade`
 ## Content index
