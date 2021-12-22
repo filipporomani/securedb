@@ -43,7 +43,8 @@ class Db():
             print("The specified database does not exist.")
 
     def write(self, key, value):
-        to_dict = decrypt(self.key, bytes(self.payload))
+        f = open(self.path, "r").read()
+        to_dict = decrypt(self.key, bytes(eval(f)))
         ev = eval(to_dict.decode())
         data = dict(ev)
         data[key] = value
@@ -55,7 +56,8 @@ class Db():
         return "Key written to the database"
 
     def write_many(self, payload: dict):
-        to_dict = decrypt(self.key, bytes(self.payload))
+        f = open(self.path, "r").read()
+        to_dict = decrypt(self.key, bytes(eval(f)))
         ev = eval(to_dict.decode())
         data = dict(ev)
         for key, value in payload.items():
@@ -100,13 +102,15 @@ class Db():
         return els
 
     def delete(self, key):
-        to_dict = decrypt(self.key, bytes(self.payload))
+        f = open(self.path, "r").read()
+        to_dict = decrypt(self.key, bytes(eval(f)))
         ev = eval(to_dict.decode())
         data = dict(ev)
-        try:
-            data.pop(key)
-        except:
-            print(f"Key {key} was not deleted because it does not exist.")
+        #try:
+        print(data)
+        data.pop(key)
+        #except:
+        #    print(f"Key {key} was not deleted because it does not exist.")
         with open(self.path, "w") as f:
             to_encrypt = str(data).encode()
             to_write = encrypt(self.key, (to_encrypt))
@@ -115,7 +119,8 @@ class Db():
         return "Key deleted from the database"
 
     def delete_many(self, payload: list):
-        to_dict = decrypt(self.key, bytes(self.payload))
+        f = open(self.path, "r").read()
+        to_dict = decrypt(self.key, bytes(eval(f)))
         ev = eval(to_dict.decode())
         data = dict(ev)
         for x in payload:
