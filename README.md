@@ -28,7 +28,7 @@
 # Documentation
 
 ## New in 1.1.0
--  `force` kwarg added in the initialization; see [initialization](###Initialization)
+-  `force` kwarg added in the initialization; see [initialization](#Initialization)
 -  You don't need to manually encode the key during the initialization
 -  If there is no error, all the functions now return `True`
 -  Useless print() functions were removed
@@ -73,7 +73,7 @@ There isn't any limit regarding the size of the input dictionary.
 ## Deleting
 ### delete()
 The `delete(key)` function allows you to delete a single value from the database.
-`key` is the value's key inside the database (see [write](##writing)) and must be a string or an integer. 
+`key` is the value's key inside the database (see [write](#writing)) and must be a string or an integer. 
 
 ### delete_many()
 The `delete_many(payload)` function allows you to delete many values at the same time.
@@ -87,8 +87,8 @@ Be careful using it, because this action cannot be undone and the function doesn
 ## Reading
 ### get()
 To read any value from the database, you need to use the `get(key)` function.
-`key` is the key of the value you want to read (see [write](##writing)).
+`key` is the key of the value you want to read (see [write](#writing)).
 
 ### get_many()
 To read any value from the database, you need to use the `get_many(keys)` function.
-`keys` is a list of the keys you want to read (see [write](##writing)).
+`keys` is a list of the keys you want to read (see [write](#writing)).
