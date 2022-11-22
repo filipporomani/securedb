@@ -3,23 +3,38 @@
 ## securedb is a Python framework that lets you work with encrypted JSON databases.
 ## `pip install securedb --upgrade`
 ## Content index
-- [Creating a DB](#creation)
-  - [Encryption key generation](#key)
-  - [Database initialization](#initialization)
-- [Writing values](#writing)
-  - [write()](#write)
-  - [write_many()](#write_many)
-- [Deleting values](#deleting)
-  - [delete()](#delete)
-  - [delete_many()](#delete_many)
-  - [clear()](#clear)
-- [Reading values](#reading)
-  - [get()](#get)
-  - [get_many()](#get_many)
+- [securedb](#securedb)
+  - [securedb is a Python framework that lets you work with encrypted JSON databases.](#securedb-is-a-python-framework-that-lets-you-work-with-encrypted-json-databases)
+  - [`pip install securedb --upgrade`](#pip-install-securedb---upgrade)
+  - [Content index](#content-index)
+- [Documentation](#documentation)
+  - [New in 1.1.0](#new-in-110)
+  - [Creation](#creation)
+    - [Key](#key)
+    - [Initialization](#initialization)
+  - [Writing](#writing)
+    - [write()](#write)
+    - [write\_many()](#write_many)
+  - [Deleting](#deleting)
+    - [delete()](#delete)
+    - [delete\_many()](#delete_many)
+    - [clear()](#clear)
+  - [Reading](#reading)
+    - [get()](#get)
+    - [get\_many()](#get_many)
 
 
 
 # Documentation
+
+## New in 1.1.0
+-  `force` kwarg added in the initialization; see [initialization](###Initialization)
+-  You don't need to manually encode the key during the initialization
+-  If there is no error, all the functions now return `True`
+-  Useless print() functions were removed
+-  Smoother error handling
+
+
 ## Creation
 ### Key
 To create a database, an encryption key is needed. To generate it, you can use the built-in `newkey()` function.
@@ -35,8 +50,9 @@ Now, create a blank file (there aren't file extensions restrictions), copy the p
 import securedb
 with open(".key", "r") as f:
     key = f.read()
-db = securedb.Db(path, bytes(key.encode()))
+db = securedb.Db(path, key, force=True)
 ```
+With `force=True` the program will create a new db in the given path if no database is found. `force` is default set to `False`.
 Remember that if you lost your key there will be no way to recover the database content, so keep it safe!
 
 ## Writing
@@ -52,7 +68,7 @@ The `write(key, value)` function allows you to insert a single value into the da
 The `write_many(payload)` function allows you to write many values in a single time. 
 `payload is a dictionary with all the values you need to insert:
 `{key: value, key1: value1, key2: value2}` etc.
-There isn't any limit regarding the size of the dictionary; theoretically you can write an infinite amount of values at the same time.
+There isn't any limit regarding the size of the input dictionary.
 
 ## Deleting
 ### delete()
