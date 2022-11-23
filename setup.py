@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='securedb',
-    version='2.0.1',
+    version='2.0.1a',
     description='securedb is a fast and lightweight Python framework to easily interact with JSON-based encrypted databases.',
     py_modules=["securedb"],
     package_dir={'': 'src'},
@@ -30,5 +30,5 @@ setup(
     long_description_content_type="text/markdown",
     author="Filippo Romani",
     author_email="mail@filipporomani.it",
-    url="https://github.com/filipporomani/securedb"
+    url="https://github.com/pysecuredb/securedb"
 )
