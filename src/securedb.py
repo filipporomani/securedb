@@ -14,7 +14,7 @@ def decrypt(key, data):
     return fernet.decrypt(data)
 
 def newkey(**kwargs):
-    keyfile = open(kwargs.get("keyfile", ".key"), "w+") # keyfile now supports custom path
+    keyfile = open(kwargs.get("keyfile", ".key"), "w+") # New in 2.0.0: keyfile now supports custom path
     editable = Fernet.generate_key()
     key1 = str(editable).replace("b'", "")
     key = str(key1).replace("'", "")
@@ -23,7 +23,12 @@ def newkey(**kwargs):
 class Db:
     def __init__(self, path: str, key: str, **kwargs):
         self.path = path
-        self.key = bytes(key.encode())
+        try:
+            with open(key, "r") as f:
+                keyf = f.read()
+        except FileNotFoundError:
+            raise PathError(f"Error: key file {key} does not exist.")
+        self.key = bytes(keyf.encode())
         self.force = kwargs.get("force", False)
 
         try:
@@ -34,7 +39,7 @@ class Db:
                     os.mkdir(path + "/")
                 else:
                     raise PathError
-            
+
         except:
             raise PathError("The specified database does not exist. Enable force to create a new database without raising an error.")
 
@@ -91,8 +96,9 @@ class Db:
         try:
             return data[key]
         except KeyError:
-            raise KeyError(f"Error getting {key}: key {key} does not exist.")
+            raise KeyError(f"Error getting {key}: key {key} does not exist.") # New in 2.0.0: KeyErrors now raise a KeyError instead of printing a message. This is to make it easier to catch errors.
             return False
+
 
     def get_many(self, keys : list):
         try:

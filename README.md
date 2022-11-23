@@ -10,13 +10,14 @@
 ## Content index
 
 - [Changelog](#changelog)
-  - [New in 2.0.0 (Latest)](#new-in-200-latest)
+  - [New in 2.0.1 (Latest)](#new-in-201-latest)
+  - [New in 2.0.0](#new-in-200)
   - [New in 1.1.0](#new-in-110)
 - [Documentation](#documentation)
-  - [Creation](#creation)
+  - [DB Creation](#db-creation)
     - [Key](#key)
     - [Initialization](#initialization)
-  - [Writing](#writing)
+  - [Writing keys](#writing-keys)
     - [write()](#write)
     - [write\_many()](#write_many)
   - [Deleting](#deleting)
@@ -29,13 +30,16 @@
 
 
 # Changelog
-## New in 2.0.0 (Latest)
+
+## New in 2.0.1 (Latest)
+-  Fixed docs missing initialization instructions
+
+## New in 2.0.0
 -  Completely redesigned db schema, now using single files for each database key
 -  Maximum database storage size heavily increased
 -  Lower memory consumption
 -  Mapped every possible error
 -  Custom key file path
-
 
 ## New in 1.1.0
 -  `force` kwarg added in the initialization; see [initialization](#Initialization)
@@ -47,40 +51,48 @@
 
 # Documentation
 
-## Creation
+
+
+## DB Creation
 ### Key
 To create a database, an encryption key is needed. To generate it, you can use the built-in `newkey()` function.
 ```py
 import securedb
-securedb.newkey()
+securedb.newkey(keyfile="path/to/key/storage") # the "keyfile" kwarg is optional and default set to ".key".
 ```
-This will create a new file named ".key" which contains a randomly generated encryption key.
+This will create a new file: it'll be named ".key" if no `keyfile` is specified, else it'll be named as you want.
+The key file is the file which contains the encryption key.
+
+
 
 ### Initialization
-Now, create a blank file (there aren't file extensions restrictions), copy the path and the init the Db() class:
 ```py
 import securedb
-with open(".key", "r") as f:
-    key = f.read()
-db = securedb.Db(path, key, force=True)
-```
-With `force=True` the program will create a new db in the given path if no database is found. `force` is default set to `False`.
-Remember that if you lost your key there will be no way to recover the database content, so keep it safe!
 
-## Writing
+db = securedb.Db(db_path, path_to_key, force=True)
+# path is the database storage location, key is the path to the key file and force is described below.
+```
+With `force=True` the program will create a new db in the given path if no database is found. `force` is optional and default set to `False`.
+Remember that if you lost your key there will be no way to recover the database content.
+
+
+
+## Writing keys
 ### write()
 The `write(key, value)` function allows you to insert a single value into the database.
 `key` is the value name
 `value` is the value data.
 
-`key` is used to access the data, and must be an integral or a string;
+`key` is used to access the data, and must be an integer or a string;
 `value` can be anything such as boolean, integer, string, array, list, dictionary ecc.
 
 ### write_many()
 The `write_many(payload)` function allows you to write many values in a single time. 
-`payload is a dictionary with all the values you need to insert:
+`payload` is a dictionary with all the values you need to insert:
 `{key: value, key1: value1, key2: value2}` etc.
-There isn't any limit regarding the size of the input dictionary.
+There isn't any limit regarding the size of the payload. For perfomance reasons, we suggest you to use payloads with a maximum size of 5mb, even if there is no software limit.
+
+
 
 ## Deleting
 ### delete()
@@ -95,6 +107,8 @@ The `delete_many(payload)` function allows you to delete many values at the same
 ### clear()
 The `clear()` functions is a dangerous function that allows you to erease the whole database. 
 Be careful using it, because this action cannot be undone and the function doesn't ask confirmation before ereasing the database.
+
+
 
 ## Reading
 ### get()
