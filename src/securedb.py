@@ -13,137 +13,119 @@ def decrypt(key, data):
     fernet = Fernet(key)
     return fernet.decrypt(data)
 
-def newkey():
-        keyfile = open(".key", "w+")
-        editable = Fernet.generate_key()
-        key1 = str(editable).replace("b'", "")
-        key = str(key1).replace("'", "")
-        keyfile.write(str(key))
+def newkey(**kwargs):
+    keyfile = open(kwargs.get("keyfile", ".key"), "w+") # keyfile now supports custom path
+    editable = Fernet.generate_key()
+    key1 = str(editable).replace("b'", "")
+    key = str(key1).replace("'", "")
+    keyfile.write(str(key))
 
-class Db():
+class Db:
     def __init__(self, path: str, key: str, **kwargs):
         self.path = path
         self.key = bytes(key.encode())
         self.force = kwargs.get("force", False)
 
         try:
-            if os.path.isfile(path): 
-                f = open(path, "r")
-                if f.read() == "": # If the file is empty
-                    with open(path, "w") as f:
-                        to_write = encrypt(key, ("{}").encode()) # Write an empty dict and setup a new database
-                        f.write(str(to_write))
-                        f.close()
+            if os.path.isdir(path): 
+                return None
             else:
                 if self.force: # New in 1.1.0: force=True -> Create a new database if it does not exist
-                    with open(path, "w+") as f:
-                        to_write = encrypt(key, ("{}").encode())
-                        f.write(str(to_write))
-                        f.close()
+                    os.mkdir(path + "/")
                 else:
                     raise PathError
             
-        except PathError:
-            print("The specified database does not exist. Enable force to create a new database without raising an error.")
+        except:
+            raise PathError("The specified database does not exist. Enable force to create a new database without raising an error.")
 
 
 
     def write(self, key, value):
-        try:
-            f = open(self.path, "r").read()
+            f = open(self.path + '/'+ str(key) + ".sdbk", "w+").read()
+            if f == "":
+                f = str(encrypt(self.key, str({}).encode()))
             to_dict = decrypt(self.key, bytes(eval(f)))
             data = dict(eval(to_dict.decode()))
             data[key] = value
-            with open(self.path, "w") as f:
+            with open(self.path + '/'+ str(key) + ".sdbk", "w") as f:
                 to_encrypt = str(data).encode()
                 to_write = encrypt(self.key, (to_encrypt))
                 f.write(str(to_write))
                 f.close()
             return True
-        except:
-            return False
+
 
     def write_many(self, payload: dict):
         try:
-            f = open(self.path, "r").read()
-            to_dict = decrypt(self.key, bytes(eval(f)))
-            data = dict(eval(to_dict.decode()))
-            for key, value in payload.items():
-                data[key] = value
-            with open(self.path, "w") as f:
+            for x in payload.keys():
+                f = open(self.path + '/'+ str(x) + ".sdbk", "w+").read()
+                if f == "":
+                    f = str(encrypt(self.key, str({}).encode()))
                 
-                to_encrypt = str(data).encode()
-                to_write = encrypt(self.key, (to_encrypt))
-                f.write(str(to_write))
-                f.close()
-            return True
-        except:
-            return False
-    
-    def clear(self):
-        try:
-            f = open(self.path, 'r+')
-            f.truncate(0)
-            f.close()
+                to_dict = decrypt(self.key, bytes(eval(f)))
+                data = dict(eval(to_dict.decode()))
+                data[x] = payload[x]
+                with open(self.path + '/'+ str(x) + ".sdbk", "w") as f:
+                    to_encrypt = str(data).encode()
+                    to_write = encrypt(self.key, (to_encrypt))
+                    f.write(str(to_write))
+                    f.close()
             return True
         except:
             return False
 
+
+
+    def clear(self):
+        for x in os.listdir(self.path):
+            os.remove(self.path + "/" + x)
+        
+
     def get(self, key):
-        f = open(self.path, "r")
+        try: f = open(self.path + '/'+ str(key) + ".sdbk", "r")
+        except FileNotFoundError:
+            raise KeyError(f"Key {key} does not exist.")
         l = eval(f.read())
         to_dict = decrypt(self.key, bytes(l))
         data = dict(eval(to_dict.decode()))
         try:
             return data[key]
         except KeyError:
-            print(f"Error getting {key}: key {key} does not exist.")
+            raise KeyError(f"Error getting {key}: key {key} does not exist.")
             return False
 
     def get_many(self, keys : list):
-        f = open(self.path, "r")
-        l = eval(f.read())
-        to_dict = decrypt(self.key, bytes(l))
-        ev = eval(to_dict.decode())
-        data = dict(ev)
-        els = {}
-        for x in keys:
-            try:
-                els[x] = data[x]
-            except KeyError:
-                print(f"Error getting many keys: key {x} could not be resolved.")
-        return els
+        try:
+            els = {}
+            for key in keys:
+                try: f = open(self.path + '/'+ str(key) + ".sdbk", "r").read()
+                except FileNotFoundError:
+                    raise KeyError(f"Key {key} does not exist.")
+
+
+                to_dict = decrypt(self.key, bytes(eval(f)))
+                data = dict(eval(to_dict.decode()))
+                try:
+                    els[key] = data[key]
+                except KeyError:
+                        raise KeyError(f"Error getting many keys: key {x} could not be resolved.")
+            return els
+        except:
+            return False
 
     def delete(self, key):
-        f = open(self.path, "r").read()
-        to_dict = decrypt(self.key, bytes(eval(f)))
-        data = dict(eval(to_dict.decode()))
         try:
-            data.pop(key)
-        except:
-            print(f"Error deleting {key}: key {key} was not deleted because it does not exist.")
+            os.remove(self.path + '/'+ str(key) + ".sdbk")
+            return True
+        except FileNotFoundError:
+            raise KeyError(f"Error deleting {key}: key {key} does not exist.")
             return False
-        with open(self.path, "w") as f:
-            to_encrypt = str(data).encode()
-            to_write = encrypt(self.key, (to_encrypt))
-            f.write(str(to_write))
-            f.close()
-        return True
 
     def delete_many(self, payload: list):
-        f = open(self.path, "r").read()
-        to_dict = decrypt(self.key, bytes(eval(f)))
-        ev = eval(to_dict.decode())
-        data = dict(ev)
-        for x in payload:
+        for key in payload:
             try:
-                data.pop(x)
-            except:
-                print(f"Error deleting many keys: key {x} was not deleted because it does not exist.")
-                continue
-        with open(self.path, "w") as f:
-            to_encrypt = str(data).encode()
-            to_write = encrypt(self.key, (to_encrypt))
-            f.write(str(to_write))
-            f.close()
+                os.remove(self.path + '/'+ str(key) + ".sdbk")
+            except FileNotFoundError:
+                raise KeyError(f"Error deleting {key}: key {key} does not exist.")
+
         return True

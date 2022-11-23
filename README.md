@@ -1,14 +1,18 @@
-# securedb
+<h1>securedb</h1>
+
 [![Downloads](https://static.pepy.tech/personalized-badge/securedb?period=total&units=none&left_color=grey&right_color=blue&left_text=Downloads)](https://pypi.org/project/securedb) [![PyPi version](https://badgen.net/pypi/v/securedb/)](https://pypi.org/project/securedb) [![PyPI status](https://img.shields.io/pypi/status/securedb.svg)](https://pypi.python.org/pypi/securedb/)
-## securedb is a Python framework that lets you work with encrypted JSON databases.
+
+
+## securedb is a lightweight Python framework that lets you work with encrypted JSON-based databases.
 ## `pip install securedb --upgrade`
+
+
 ## Content index
-- [securedb](#securedb)
-  - [securedb is a Python framework that lets you work with encrypted JSON databases.](#securedb-is-a-python-framework-that-lets-you-work-with-encrypted-json-databases)
-  - [`pip install securedb --upgrade`](#pip-install-securedb---upgrade)
-  - [Content index](#content-index)
-- [Documentation](#documentation)
+
+- [Changelog](#changelog)
+  - [New in 2.0.0 (Latest)](#new-in-200-latest)
   - [New in 1.1.0](#new-in-110)
+- [Documentation](#documentation)
   - [Creation](#creation)
     - [Key](#key)
     - [Initialization](#initialization)
@@ -24,8 +28,14 @@
     - [get\_many()](#get_many)
 
 
+# Changelog
+## New in 2.0.0 (Latest)
+-  Completely redesigned db schema, now using single files for each database key
+-  Maximum database storage size heavily increased
+-  Lower memory consumption
+-  Mapped every possible error
+-  Custom key file path
 
-# Documentation
 
 ## New in 1.1.0
 -  `force` kwarg added in the initialization; see [initialization](#Initialization)
@@ -34,6 +44,8 @@
 -  Useless print() functions were removed
 -  Smoother error handling
 
+
+# Documentation
 
 ## Creation
 ### Key
