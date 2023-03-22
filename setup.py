@@ -30,5 +30,5 @@ setup(
     long_description_content_type="text/markdown",
     author="Filippo Romani",
     author_email="mail@filipporomani.it",
-    url="https://github.com/pysecuredb/securedb"
+    url="https://github.com/filipporomani/securedb"
 )
