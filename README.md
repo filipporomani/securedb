@@ -3,14 +3,15 @@
 [![Downloads](https://static.pepy.tech/personalized-badge/securedb?period=total&units=none&left_color=grey&right_color=blue&left_text=Downloads)](https://pypi.org/project/securedb) [![PyPi version](https://badgen.net/pypi/v/securedb/)](https://pypi.org/project/securedb) [![PyPI status](https://img.shields.io/pypi/status/securedb.svg)](https://pypi.python.org/pypi/securedb/)
 
 
-## securedb is a lightweight Python framework that lets you work with encrypted JSON-based databases.
+## securedb is a lightweight Python database framework to handle basic key-value encrypted data.
 ## `pip install securedb --upgrade`
 
 
 ## Content index
 
 - [Changelog](#changelog)
-  - [New in 2.0.1 (Latest)](#new-in-201-latest)
+  - [New in 2.0.2 (Latest)](#new-in-202-latest)
+  - [New in 2.0.1](#new-in-201)
   - [New in 2.0.0](#new-in-200)
   - [New in 1.1.0](#new-in-110)
 - [Documentation](#documentation)
@@ -31,7 +32,11 @@
 
 # Changelog
 
-## New in 2.0.1 (Latest)
+## New in 2.0.2 (Latest)
+-  Bugfix in the get_many() function
+-  Pep8 compliant
+-  Fixes in the docs
+## New in 2.0.1
 -  Fixed docs missing initialization instructions
 
 ## New in 2.0.0

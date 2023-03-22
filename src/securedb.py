@@ -119,7 +119,7 @@ class Db:
                     els[key] = data[key]
                 except KeyError:
                     raise KeyError(
-                        f"Error getting many keys: key {x} could not be resolved.")
+                        f"Error getting many keys: key {key} could not be resolved.")
             return els
         except:
             return False
